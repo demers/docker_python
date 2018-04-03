@@ -29,7 +29,7 @@ RUN echo "$USERNAME:$PASSWORD" | chpasswd
 RUN apt install -y xauth
 
 # Installation Python 3
-RUN apt install -y git python3 python3-pip python3-mock
+RUN apt install -y git python3 python3-pip python3-mock python3-tk
 # Mise à jour PIP
 RUN pip3 install --upgrade pip
 RUN pip3 install flake8
