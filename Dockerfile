@@ -31,6 +31,8 @@ RUN apt install -y fish
 # Installation X11.
 RUN apt install -y xauth vim-gtk
 
+RUN apt-get update
+
 # Installation Python 3
 RUN apt install -y git python3 python3-pip python3-mock python3-tk
 # Mise à jour PIP
@@ -40,6 +42,11 @@ RUN pip3 install flake8-docstrings
 RUN pip3 install pylint
 
 WORKDIR ${WORKDIRECTORY}
+
+RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
+RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+RUN echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile
 
 RUN cd ${WORKDIRECTORY} \
     && git clone git://github.com/zaiste/vimified.git \
