@@ -25,6 +25,9 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${USERNAM
 # Set password for the Ubuntu user (you may want to alter this).
 RUN echo "$USERNAME:$PASSWORD" | chpasswd
 
+RUN apt install -y fish
+#RUN chsh -s /usr/bin/fish ubuntu
+
 # Installation X11.
 RUN apt install -y xauth vim-gtk
 
@@ -62,8 +65,6 @@ RUN echo "vim +BundleInstall +qall" >> ${WORKDIRECTORY}/.bash_profile
 RUN echo "export PS1=\"\\e[0;31m $PROJECTNAME\\e[m \$PS1\"" >> ${WORKDIRECTORY}/.bash_profile
 
 RUN echo "export PYTHONPATH=." >> ${WORKDIRECTORY}/.bash_profile
-
-RUN apt install -y fish
 
 RUN cd ${WORKDIRECTORY} \
     && mkdir work \
