@@ -26,7 +26,7 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${USERNAM
 RUN echo "$USERNAME:$PASSWORD" | chpasswd
 
 # Installation X11.
-RUN apt install -y xauth
+RUN apt install -y xauth vim-gtk
 
 # Installation Python 3
 RUN apt install -y git python3 python3-pip python3-mock python3-tk
@@ -60,6 +60,10 @@ RUN echo "vim +BundleInstall +qall" >> ${WORKDIRECTORY}/.bash_profile
 #RUN vim +BundleInstall +qall 2&> /dev/null
 
 RUN echo "export PS1=\"\\e[0;31m $PROJECTNAME\\e[m \$PS1\"" >> ${WORKDIRECTORY}/.bash_profile
+
+RUN echo "export PYTHONPATH=." >> ${WORKDIRECTORY}/.bash_profile
+
+RUN apt install -y fish
 
 RUN cd ${WORKDIRECTORY} \
     && mkdir work \
