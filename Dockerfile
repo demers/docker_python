@@ -41,6 +41,10 @@ RUN pip3 install flake8
 RUN pip3 install flake8-docstrings
 RUN pip3 install pylint
 
+## Clean up when done
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 WORKDIR ${WORKDIRECTORY}
 
 RUN git clone https://github.com/pyenv/pyenv.git ${WORKDIRECTORY}/.pyenv
