@@ -46,12 +46,13 @@ WORKDIR ${WORKDIRECTORY}
 RUN git clone https://github.com/pyenv/pyenv.git ${WORKDIRECTORY}/.pyenv
 RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ${WORKDIRECTORY}/.bash_profile
 RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ${WORKDIRECTORY}/.bash_profile
-RUN echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ${WORKDIRECTORY}/.bash_profile
+RUN echo 'eval "$(pyenv init -)"' >> ${WORKDIRECTORY}/.bash_profile
 
 RUN cd ${WORKDIRECTORY} \
     && git clone git://github.com/zaiste/vimified.git \
     && ln -sfn vimified/ ${WORKDIRECTORY}/.vim \
-    && ln -sfn vimified/vimrc ${WORKDIRECTORY}/.vimrc \
+    #&& rm -f ${WORKDIRECTORY}/.vimrc \
+    #&& ln -sfn vimified/vimrc ${WORKDIRECTORY}/.vimrc \
     && cd vimified \
     && mkdir bundle \
     && mkdir -p tmp/backup tmp/swap tmp/undo \
@@ -75,7 +76,7 @@ RUN echo "export PYTHONPATH=." >> ${WORKDIRECTORY}/.bash_profile
 
 RUN cd ${WORKDIRECTORY} \
     && mkdir work \
-    && chown -R $USERNAME:$PASSWORD work vimified .vim .vimrc .bash_profile
+    && chown -R $USERNAME:$PASSWORD work vimified .vim .vimrc .bash_profile .pyenv
 
 # Standard SSH port
 EXPOSE 22
