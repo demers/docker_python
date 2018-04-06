@@ -3,6 +3,7 @@ version: '2.1'
 services:
   python3:
     build: .
+    image: python3
     container_name: python3
     volumes:
       - "data_work:/home/ubuntu/work"

@@ -43,15 +43,15 @@ RUN pip3 install pylint
 
 WORKDIR ${WORKDIRECTORY}
 
-RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
-RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
-RUN echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile
+RUN git clone https://github.com/pyenv/pyenv.git ${WORKDIRECTORY}/.pyenv
+RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ${WORKDIRECTORY}/.bash_profile
+RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ${WORKDIRECTORY}/.bash_profile
+RUN echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ${WORKDIRECTORY}/.bash_profile
 
 RUN cd ${WORKDIRECTORY} \
     && git clone git://github.com/zaiste/vimified.git \
-    && ln -sfn vimified/ ~/.vim \
-    && ln -sfn vimified/vimrc ~/.vimrc \
+    && ln -sfn vimified/ ${WORKDIRECTORY}/.vim \
+    && ln -sfn vimified/vimrc ${WORKDIRECTORY}/.vimrc \
     && cd vimified \
     && mkdir bundle \
     && mkdir -p tmp/backup tmp/swap tmp/undo \
