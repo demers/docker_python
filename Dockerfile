@@ -80,7 +80,7 @@ RUN echo "export PYTHONPATH=." >> ${WORKDIRECTORY}/.bash_profile
 
 RUN cd ${WORKDIRECTORY} \
     && mkdir work \
-    && chown -R $USERNAME:$PASSWORD work vimified .vim .vimrc .bash_profile .pyenv
+    && chown -R $USERNAME:$USERNAME work vimified .vim .vimrc .bash_profile .pyenv
 
 # Standard SSH port
 EXPOSE 22
