@@ -82,6 +82,9 @@ RUN cd ${WORKDIRECTORY} \
     && mkdir work \
     && chown -R $USERNAME:$USERNAME work vimified .vim .vimrc .bash_profile .pyenv
 
+ENV TZ=America/Toronto
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Standard SSH port
 EXPOSE 22
 
