@@ -15,7 +15,7 @@ ENV WORKDIRECTORY /home/ubuntu
 
 RUN apt-get update
 
-RUN apt-get install -y vim-nox curl git
+RUN apt-get install -y vim-nox curl git exuberant-ctags
 
 # Install a basic SSH server
 RUN apt install -y openssh-server
