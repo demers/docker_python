@@ -6,6 +6,9 @@ MAINTAINER FND <fndemers@gmail.com>
 ENV USERNAME=ubuntu
 ENV PASSWORD=ubuntu
 
+ENV EMAIL="ubuntu@ubuntu.com"
+ENV NAME="ubuntu"
+
 ENV PROJECTNAME=PYTHON3
 
 ENV WORKDIRECTORY /home/ubuntu
@@ -57,11 +60,12 @@ RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ${WORKDIRECTORY}/.bash_profile
 RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ${WORKDIRECTORY}/.bash_profile
 RUN echo 'eval "$(pyenv init -)"' >> ${WORKDIRECTORY}/.bash_profile
 
+RUN echo "git config --global user.email '$EMAIL'" >> ${WORKDIRECTORY}/.bash_profile
+RUN echo "git config --global user.name '$NAME'" >> ${WORKDIRECTORY}/.bash_profile
+
 RUN cd ${WORKDIRECTORY} \
     && git clone git://github.com/zaiste/vimified.git \
     && ln -sfn vimified/ ${WORKDIRECTORY}/.vim \
-    #&& rm -f ${WORKDIRECTORY}/.vimrc \
-    #&& ln -sfn vimified/vimrc ${WORKDIRECTORY}/.vimrc \
     && cd vimified \
     && mkdir bundle \
     && mkdir -p tmp/backup tmp/swap tmp/undo \
