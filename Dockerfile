@@ -92,6 +92,7 @@ RUN cd ${WORKDIRECTORY} \
     && chown -R $USERNAME:$USERNAME work vimified .vim .vimrc .bash_profile .pyenv
 
 RUN pip3 install twisted
+RUN pip3 install python-interface utils
 
 # Standard SSH port
 EXPOSE 22
