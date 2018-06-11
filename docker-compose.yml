@@ -7,7 +7,7 @@ services:
     container_name: python3
     volumes:
       - "/home/demers/work:/home/ubuntu/work"
-    restart: always
+    #restart: always
     ports:
       - "22:22"
     network_mode: "host"
