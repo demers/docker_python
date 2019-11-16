@@ -1,19 +1,25 @@
-FROM ubuntu:17.10
+FROM ubuntu:18.04
 
 MAINTAINER FND <fndemers@gmail.com>
+
+ENV TERM=xterm\
+    TZ=America/Toronto\
+    DEBIAN_FRONTEND=noninteractive
 
 # Access SSH login
 ENV USERNAME=ubuntu
 ENV PASSWORD=ubuntu
 
-ENV EMAIL="ubuntu@ubuntu.com"
-ENV NAME="ubuntu"
+ENV EMAIL="fndemers@gmail.com"
+ENV NAME="F.-Nicola Demers"
 
 ENV PROJECTNAME=PYTHON3
 
 ENV WORKDIRECTORY /home/ubuntu
 
 RUN apt-get update
+
+RUN apt install -y apt-utils
 
 RUN apt-get install -y vim-nox curl git exuberant-ctags
 
@@ -30,15 +36,27 @@ RUN echo "$USERNAME:$PASSWORD" | chpasswd
 
 RUN apt-get clean && apt-get -y update && apt-get install -y locales && locale-gen fr_CA.UTF-8
 ENV TZ=America/Toronto
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN unlink /etc/localtime
+RUN ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
 RUN apt install -y fish
-#RUN chsh -s /usr/bin/fish ubuntu
+
+# Ajout des droits sudoers
+RUN apt-get install -y sudo
+RUN echo "%ubuntu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+RUN echo "export DISPLAY=:0.0" >> ${WORKDIRECTORY}/.bash_profile
+RUN echo "export DISPLAY=:0.0" >> /root/.bash_profile
 
 # Installation X11.
 RUN apt install -y xauth vim-gtk
 
 RUN apt-get update
+RUN apt-get install -y build-essential cmake python3-dev
+
+RUN apt -qy install gcc g++ make
+
+RUN apt install -y software-properties-common apt-transport-https wget
 
 # Installation Python 3
 RUN apt install -y git python3 python3-pip python3-mock python3-tk
@@ -66,6 +84,7 @@ RUN echo "git config --global user.name '$NAME'" >> ${WORKDIRECTORY}/.bash_profi
 RUN cd ${WORKDIRECTORY} \
     && git clone git://github.com/zaiste/vimified.git \
     && ln -sfn vimified/ ${WORKDIRECTORY}/.vim \
+    && ln -sfn vimified/vimrc ${WORKDIRECTORY}/.vimrc \
     && cd vimified \
     && mkdir bundle \
     && mkdir -p tmp/backup tmp/swap tmp/undo \
@@ -76,12 +95,17 @@ COPY after.vimrc ${WORKDIRECTORY}/vimified/
 
 COPY extra.vimrc ${WORKDIRECTORY}/vimified
 
-RUN cd ${WORKDIRECTORY} \
-    && ln -s vimified .vim \
-    && ln -s vimified/vimrc .vimrc
+# Générer les tags de ctags.
+RUN echo "ctags -f ${WORKDIRECTORY}/mytags -R ${WORKDIRECTORY}" >> ${WORKDIRECTORY}/.bash_profile
 
+# Compiling YouCompleteMe only once...
+RUN echo "if ! [ -f ~/.runonce_install ]; then" >> ${WORKDIRECTORY}/.bash_profile
+RUN echo "touch ~/.runonce_install" >> ${WORKDIRECTORY}/.bash_profile
 RUN echo "vim +BundleInstall +qall" >> ${WORKDIRECTORY}/.bash_profile
-#RUN vim +BundleInstall +qall 2&> /dev/null
+RUN echo "cd ~/.vim/bundle/YouCompleteMe" >> ${WORKDIRECTORY}/.bash_profile
+RUN echo "./install.py --clang-completer" >> ${WORKDIRECTORY}/.bash_profile
+RUN echo "fi" >> ${WORKDIRECTORY}/.bash_profile
+RUN echo "cd ~/" >> ${WORKDIRECTORY}/.bash_profile
 
 RUN echo "export PS1=\"\\e[0;31m $PROJECTNAME\\e[m \$PS1\"" >> ${WORKDIRECTORY}/.bash_profile
 
