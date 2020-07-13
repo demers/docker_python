@@ -6,8 +6,9 @@ services:
     image: python3
     container_name: python3
     volumes:
-      - "/home/demers/work:/home/ubuntu/work"
+      - "data_work:/home/ubuntu/work"
     #restart: always
     ports:
       - "22:22"
+      - "5901:5901"
     network_mode: "host"
