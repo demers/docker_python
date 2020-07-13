@@ -12,3 +12,7 @@ services:
       - "22:22"
       - "5901:5901"
     network_mode: "host"
+
+volumes:
+  data_work:
+
